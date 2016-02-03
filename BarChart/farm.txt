@@ -1,7 +1,1 @@
-6,
-100,pigs,
-300,sheep,
-200,cows,
-50,horses,
-150,goats,
-600,chicken
+6,100,pigs,300,sheep,200,cows,50,horses,150,goats,600,chicken
