@@ -4,6 +4,7 @@
 import java.awt.*; 
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.*;
 
 public class BarChart extends JFrame {
 	private static final String title="Bar Chart Generator";
@@ -26,6 +27,8 @@ public class BarChart extends JFrame {
 
 class Chart extends JPanel {
 	
+	int numBars, maxVal
+	
 	public void paint(Graphics g) {
 		super.paint(g);
 		
@@ -33,8 +36,26 @@ class Chart extends JPanel {
 		double w = size.getWidth();
 		double h = size.getHeight();
 		
-		g.drawLine(100,200,100,400);
+		readFile(file);
+		
+		
 		
 	}
+	
+	private void readFile() 
+		throws IOException, FileNotFoundException {
+		Scanner inp = new Scanner(System.in);
+		System.out.print("Enter the name of the file to process:  ");
+		String file;
+		file = inp.next();
+		Scanner fileScan = new Scanner( new FileReader(file));
+		
+		numBars = fileScan.nextInt();
+		for (int i=0; i<numBars-1; i++) {
+			values[i] = fileScan.nextInt();
+			labels[i] = fileScan.next();
+		}
+	}
+	
 }
  
