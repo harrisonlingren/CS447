@@ -32,14 +32,14 @@ class Bot extends JPanel {
 	/* int numBars, maxVal, barWidth, pos;
 	int values[];
 	String labels[]; */
-	int xP[] = {50,50,350,350};
-	int yP[] = {50,250,250,50};
+	int xP[] = {50,50,350,350,250};
+	int yP[] = {50,250,250,50,100};
 	
-	int botX[] = {185,185,215,215};
-	int botY[] = {135,165,165,135};
+	int botX[] = {185,185,215,215}; //width: 30 height: 30
+	int botY[] = {135,165,165,135}; 
 	
-	int xCent = (botX[0] + botX[2]) / 2;
-	int yCent = (botY[0] + botY[2]) / 2;
+	double xCent = 0;
+	double yCent = 0;
 	
 	int botTriX[] = {190,210,200};
 	int botTriY[] = {135,135,125};
@@ -51,11 +51,18 @@ class Bot extends JPanel {
 		double w = size.getWidth() - 50;
 		double h = size.getHeight() + 20;
 		
-		double n = 23;
+		double n = 64;
 		
 		/* try {readFile();}
-		catch(IOException e) {System.err.println("IO issue");}
-		 */
+		catch(IOException e) {System.err.println("IO issue");} */
+		
+		double xP_dbl[] = new double[xP.length];
+		for (int i=0; i<xP.length; i++)
+			xP_dbl[i] = (double) xP[i];
+		
+		double yP_dbl[] = new double[yP.length];
+		for (int i=0; i<yP.length; i++)
+			yP_dbl[i] = (double) yP[i];		
 		
 		// room
 		g.setColor(Color.white);
@@ -63,26 +70,39 @@ class Bot extends JPanel {
 		g.setColor(Color.black);
 		g.drawPolygon(xP,yP,xP.length);
 		
-		//sensor lines
-		double angle, cosAngle, sinAngle, xRadius, yRadius, lineX, lineY;
+		Polygon p = new Polygon(xP,yP,xP.length);
 		
+		// find center point for robot
+		xCent = calcCenter(xP_dbl.length,xP_dbl,yP_dbl,xCent);
+		yCent = calcCenter(xP_dbl.length,xP_dbl,yP_dbl,yCent);
+		
+		print("");
+		print("xCent:"+xCent);
+		print("yCent:"+yCent);
+		
+		int botX[] = {(int)xCent-15,(int)xCent-15,(int)xCent+15,(int)xCent+15}; //width: 30 height: 30
+		int botY[] = {(int)yCent-15,(int)yCent+15,(int)yCent+15,(int)yCent-15};
+		System.out.print(Arrays.toString(botX));
+		System.out.print(Arrays.toString(botY));
+		
+		//sensor lines
+		double angle, cosAngle, sinAngle, radius, lineX, lineY;		
 		for (double i=0; i<n; i++) {
 			// get angles for 'n' lines
 			angle = Math.PI * (i/n) * 2;
-			System.out.println(angle);
+			// System.out.println(angle);
 			cosAngle = Math.cos(angle);
 			sinAngle = Math.sin(angle);
 			
 			// find radius length to border
-			xRadius = 200;
-			yRadius = 200;
-			
-			
-			// find outer coordinate
-			lineX = xCent + (cosAngle * xRadius);
-			lineY = yCent + (sinAngle * yRadius);
-			
+			radius = 0;
+			do {
+				lineX = xCent + (cosAngle * radius);
+				lineY = yCent + (sinAngle * radius);
+				radius++;
+			}
 			// draw line
+			while (p.contains(lineX, lineY));
 			g.drawLine((int)xCent,(int)yCent,(int)lineX,(int)lineY);
 		}
 		
@@ -93,7 +113,32 @@ class Bot extends JPanel {
 		g.setColor(Color.black);
 		g.drawPolygon(botX,botY,botX.length);
 		g.drawPolygon(botTriX,botTriY,botTriX.length);
+	}
+	
+	public void print(Object i) {System.out.println(i);}
+	
+	public double calcCenter(int nP, double[] x, double[] y, double xCent) {
+		// calculate area
+		double pA = 0;
+		print("Finding polygon area...");
+		for (int j=1; j<nP; j++) {
+			pA = pA + ( (x[j-1] * y[j]) - (x[j] * y[j-1]) );
+			print("  "+j+":"+pA);
+		}
+		pA = pA / 2;
+		print("  pA:"+pA);
+
+		// x center point
+		xCent = 0;
+		print("Finding xCent...");
+		for (int j=1; j<nP; j++) {
+			xCent = xCent + ( (x[j-1] + x[j]) * ( (x[j-1] * y[j]) - (x[j] * y[j-1]) ) );
+			print("    "+x[j-1]); print("    "+y[j-1]); print("  "+j+":"+xCent);
+		}
+		xCent = xCent * (1 / (6 * pA));
+		print("  xCent:"+xCent);
 		
+		return xCent;
 	}
 	
 	public void readFile() 
