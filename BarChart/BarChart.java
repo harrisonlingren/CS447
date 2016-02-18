@@ -52,7 +52,11 @@ class Chart extends JPanel {
 		double barH, ratio;
 		
 		for (int i=0; i<numBars-1; i++) {
-			new Color((int)(Math.random() * 0x1000000));
+			Color col[] = new Color[numBars];
+			for (int j=0; j<numBars-1; j++) {
+				col[j] = new Color((int)(Math.random() * 0x1000000));
+			}
+			
 			ratio = (double)values[i] / (double)maxVal;
 			barH = ( (h) * ratio ) - 10;
 			
@@ -61,13 +65,19 @@ class Chart extends JPanel {
 			yPos[0] = (int)h; yPos[1] = (int)barH;
 			yPos[2] = yPos[1]; yPos[3] = yPos[0];
 			
-			System.out.println("xPos:"+xPos[1]+" yPos:"+yPos[0]+" h:"+barH+" ratio:"+ratio+" pos:"+pos);
+			System.out.println("xPos:"+xPos[1]+" yPos:"+yPos[0]+" h:"+h+" barH:"+barH+" ratio:"+ratio+" pos:"+pos);
 
+			int stringPtsY[] = {((i+1)*20)+180,((i+1)*20)+200,((i+1)*20)+200,((i+1)*20)+180};
+			int stringPtsX[] = {600,600,580,580};
+			
+			g.setColor(col[i]);
 			g.fillPolygon(xPos, yPos, xPos.length);
-			g.drawString(labels[i],xPos[0],yPos[0]);
-			pos = pos + barWidth + 10;
+			
+			g.fillPolygon(stringPtsX,stringPtsY,4);
+			g.setColor(Color.black);
+			g.drawString(labels[i],610,((i+1)*20)+195);
+			pos = pos + barWidth + 10;	
 		}
-		
 	}
 	
 	public void readFile() 
