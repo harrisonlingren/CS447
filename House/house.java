@@ -16,7 +16,6 @@ public class house extends Frame {
 		);
 		setSize(936,860); show();
 		add("Center", new BuildHouse());
-		
 	}
 }
 

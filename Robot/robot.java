@@ -32,17 +32,14 @@ class Bot extends JPanel {
 	/* int numBars, maxVal, barWidth, pos;
 	int values[];
 	String labels[]; */
-	int xP[] = {50,50,350,350,250};
-	int yP[] = {50,250,250,50,100};
+	int xP[] = {50,200,250,325,450,300,180};
+	int yP[] = {200,100,200,75,325,300,400};
 	
 	int botX[] = {185,185,215,215}; //width: 30 height: 30
-	int botY[] = {135,165,165,135}; 
+	int botY[] = {135,165,165,135};
 	
 	double xCent = 0;
 	double yCent = 0;
-	
-	int botTriX[] = {190,210,200};
-	int botTriY[] = {135,135,125};
 	
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -54,7 +51,7 @@ class Bot extends JPanel {
 		double n = 64;
 		
 		/* try {readFile();}
-		catch(IOException e) {System.err.println("IO issue");} */
+		catch(IOException e) {System.err.print("IO issue");} */
 		
 		double xP_dbl[] = new double[xP.length];
 		for (int i=0; i<xP.length; i++)
@@ -62,7 +59,7 @@ class Bot extends JPanel {
 		
 		double yP_dbl[] = new double[yP.length];
 		for (int i=0; i<yP.length; i++)
-			yP_dbl[i] = (double) yP[i];		
+			yP_dbl[i] = (double) yP[i];
 		
 		// room
 		g.setColor(Color.white);
@@ -82,15 +79,18 @@ class Bot extends JPanel {
 		
 		int botX[] = {(int)xCent-15,(int)xCent-15,(int)xCent+15,(int)xCent+15}; //width: 30 height: 30
 		int botY[] = {(int)yCent-15,(int)yCent+15,(int)yCent+15,(int)yCent-15};
-		System.out.print(Arrays.toString(botX));
-		System.out.print(Arrays.toString(botY));
+		print(Arrays.toString(botX));
+		print(Arrays.toString(botY));
+		
+		int botTriX[] = {botX[0]+3,botX[2]-3,(botX[0]+botX[2])/2};
+		int botTriY[] = {botY[0],botY[0],botY[0]-7};
 		
 		//sensor lines
 		double angle, cosAngle, sinAngle, radius, lineX, lineY;		
 		for (double i=0; i<n; i++) {
 			// get angles for 'n' lines
 			angle = Math.PI * (i/n) * 2;
-			// System.out.println(angle);
+			// print(angle);
 			cosAngle = Math.cos(angle);
 			sinAngle = Math.sin(angle);
 			
@@ -144,20 +144,18 @@ class Bot extends JPanel {
 	public void readFile() 
 		throws IOException, FileNotFoundException {
 		Scanner inp = new Scanner(System.in);
-		System.out.print("Enter the name of the file to process:  ");
+		print("Enter the name of the file to process:  ");
 		String file; file = inp.nextLine();
-		System.out.println(file);
+		print(file);
 		Scanner fileScan = new Scanner( new FileReader( file ) );
 		fileScan.useDelimiter(",");
-		
-				
 		
 		/* numBars = fileScan.nextInt();
 		values = new int[numBars]; labels = new String[numBars];
 		for (int i=0; i<numBars-1; i++) {
 			values[i] = fileScan.nextInt();
 			labels[i] = fileScan.next(); 
-			System.out.println(values[i] + " " + labels[i]);
+			print(values[i] + " " + labels[i]);
 		}
 		inp.close();
 		fileScan.close(); */
