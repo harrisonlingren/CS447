@@ -231,10 +231,10 @@ class anim extends JPanel {
         //a simple method that makes a new polygon out of the rotated points
 		Polygon tempPoly = new Polygon();
 
-		/* for(int i=0; i < polyPoints.length; i++) {
-			println(polyPoints[i].x + "  --> to polygon");
+		for(int i=0; i < polyPoints.length; i++) {
+			//println(polyPoints[i].x + "  --> to polygon");
 			tempPoly.addPoint(polyPoints[i].x, polyPoints[i].y);
-        } */
+        } 
 		return tempPoly;
     }
 	
